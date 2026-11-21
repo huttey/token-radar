@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar — pre-token protocols, ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Token Launch Radar</h1>
+    <p class="sub">Every pre-token protocol in the sealed DefiLlama snapshot, ranked by what its launch would be worth — and how to farm it.</p>
+  </div>
+  <div class="meta" id="meta"></div>
+</header>
+
+<section class="stats" id="stats"></section>
+
+<section class="controls">
+  <input id="q" type="search" placeholder="Search a protocol…" aria-label="Search protocols">
+  <select id="cat" aria-label="Filter by category"><option value="">All categories</option></select>
+  <select id="chain" aria-label="Filter by chain"><option value="">All chains</option></select>
+  <label class="chk"><input id="watch" type="checkbox"> Watchlist only</label>
+  <button id="reset" type="button">Reset</button>
+</section>
+
+<main>
+  <table id="board">
+    <thead><tr>
+      <th data-sort="rank" class="num">#</th>
+      <th data-sort="name">Protocol</th>
+      <th data-sort="category">Category</th>
+      <th data-sort="chains">Chains</th>
+      <th data-sort="tvl_usd" class="num">TVL</th>
+      <th data-sort="change_7d" class="num">7d</th>
+      <th data-sort="implied_value_usd" class="num">Implied value</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="count" id="count"></p>
+  <button id="more" type="button">Show more rows</button>
+</main>
+
+<section id="detail" class="detail" hidden></section>
+
+<section class="method">
+  <h2>How the value is worked out</h2>
+  <p>Implied value = TVL × the category multiple × growth × maturity × breadth. The multiple is the median market-cap/TVL of listed protocols in the same category, each ratio capped at 5.0 first, then shrunk toward the market-wide median with a prior weight of 3 listed names, clamped to 0.05–1.50. Growth is the protocol's 7-day TVL change, clamped to −60%…+120%, weighted 0.5. Maturity is 0.6 + age/1095 days × 0.4, so a protocol that has run longer with no token counts for more. Breadth is 1 + 0.04 per extra chain, at most 1.20. No protocol name is special-cased: the same function scores every row. A protocol is pre-token when its record carries no token — no market cap, no CoinGecko id, no symbol.</p>
+  <table id="comps">
+    <thead><tr><th>Category</th><th class="num">Listed names</th><th class="num">Median mcap/TVL</th><th class="num">Multiple used</th></tr></thead>
+    <tbody id="comps-rows"></tbody>
+  </table>
+</section>
+
+<section class="live">
+  <h2>Already trading — the market's own values</h2>
+  <p>These protocols already have a token, so the board does not rank them: it shows the market's own market cap, not a model. They are the comparables the multiples above come from.</p>
+  <table id="live-table">
+    <thead><tr><th>Protocol</th><th>Category</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">7d</th></tr></thead>
+    <tbody id="live-rows"></tbody>
+  </table>
+</section>
+
+<footer>
+  <p>Data: DefiLlama protocols snapshot, <span id="asof"></span>. Source: <span id="src"></span>. Model radar-2. Implied values are this radar's own claim, never a prediction that a token is issued, or when.</p>
+</footer>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
